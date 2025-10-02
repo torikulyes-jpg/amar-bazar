@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}হোম - আমার বাজার{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="jumbotron bg-light p-5 rounded">
+            <h1 class="display-4">আমার বাজারে স্বাগতম!</h1>
+            <p class="lead">আপনার পণ্য কিনুন এবং বিক্রি করুন সহজেই</p>
+            <hr class="my-4">
+            <p>বাংলাদেশের বিশ্বস্ত অনলাইন মার্কেটপ্লেস</p>
+            <a class="btn btn-primary btn-lg" href="{% url 'ad_list' %}" role="button">পণ্য ব্রাউজ করুন</a>
+            {% if user.is_authenticated %}
+                <a class="btn btn-success btn-lg" href="{% url 'create_ad' %}" role="button">পণ্য বিক্রি করুন</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="row mt-5">
+    <div class="col-md-12">
+        <h2>সর্বশেষ পণ্য</h2>
+        <div class="row">
+            {% for ad in latest_ads %}
+            <div class="col-md-3 mb-4">
+                <div class="card h-100">
+                    <img src="{{ ad.image.url }}" class="card-img-top" alt="{{ ad.title }}" style="height: 200px; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ ad.title }}</h5>
+                        <p class="card-text">৳ {{ ad.price }}</p>
+                        <p class="card-text"><small class="text-muted">{{ ad.location }}</small></p>
+                        <a href="{% url 'ad_detail' ad.id %}" class="btn btn-primary">বিস্তারিত দেখুন</a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12">
+                <p>কোনো পণ্য পাওয়া যায়নি</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
